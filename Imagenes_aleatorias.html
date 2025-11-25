@@ -25,6 +25,13 @@
       object-fit: cover;
       box-shadow: 2px 2px 10px gray; border-radius: 10px;
     }
+    p {
+      text-align: center;
+      font-size: 20px;
+      font-family: sans-serif;
+      margin-top: 15px;
+      border: 2px solid gainsboro;
+    }
   </style>
 </head>
 <body>
@@ -32,20 +39,30 @@
   // Creamos los elementos una sola vez,un div y la imagen
   const contenedor = document.createElement("div");
   const imagen = document.createElement("img");
+  //Creamos una etiqueta de parrafo
+  const p = document.createElement("p");
   // Añadimos el contenedor al body
   document.body.appendChild(contenedor);
   //Añadimos la imagen dentro del contenedor
   contenedor.appendChild(imagen);
+  contenedor.appendChild(p);
   //Creamos una funcion que reciba la imagen y asigne la url recibida a la imagen creada,asi evitmos que se repita la misma foto
   function cargarImagen() {
     fetch("https://dog.ceo/api/breeds/image/random")
       .then(r => r.json())
       .then(datos => {
-        imagen.src = datos.message; // solo actualiza la imagen
+        let url = datos.message;               // URL completa
+        let partes = url.split("/");           // dividimos por "/"
+        let raza = partes[4];                  // la raza esta en la posicion 4
+        //Para que se vea siempre el nombre de la raza despues de que aparezca la foto para que no hay retraso
+        imagen.onload = ()=>{
+          //Aqui es donde aparece el nombre de la raza
+          p.innerHTML = raza;
+        };
+        // Aqui donde aparece la imagen(Esto dispara la carga)
+        imagen.src = datos.message;
       })
-      .catch(error => console.log("Error:", error));
-  }
-
+      .catch(error => console.log("Error:", error));}
   cargarImagen(); //Aqui hacemos la primera carga
   setInterval(cargarImagen, 3000); // Hacemos que refresque la informacion cada 3s como ejemplo(osea la misma accion de recibir una foto con la funcion cada 3s)
 </script>
