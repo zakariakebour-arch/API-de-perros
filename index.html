@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perros</title>
+    <style>
+        /*Quitar configuracion por defecto del navegador*/
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        h1{
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translate(-50%);
+        }
+        body {
+            min-height: 100vh;
+            background-image: url("C:/Users/ZakariaKebourDahmoun/Downloads/Perros.png");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        main{
+            margin: 50px;
+            padding: 10px;
+            display: grid;
+            grid-template-columns: repeat(7,auto);
+            gap: 20px;
+        }
+        /*Editamos los articulos*/
+        main article{
+            padding: 10px;
+            box-shadow: 2px 2px 10px gray; border-radius: 10px;
+            line-height: 1.6rem;
+            /*Asiganmos un limite de ancho*/
+            max-width: 250px;
+            cursor: pointer;
+            background-color: azure;
+            z-index: 1000;
+            box-shadow: 2px 2px 10px gainsboro;
+        }
+        main article:hover{
+            transform: scale(1.1);
+            transition: 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <h1>Razas de perros</h1>
+    <!--- Creamos un main principal que va a contener los articulos de cada perro--->
+    <main></main>
+    <script>
+        fetch("https://api.thedogapi.com/v1/breeds")
+            .then(respuesta=>
+                respuesta.json())
+            .then(datos=>{
+                /*Seleccionamos el main para poder añadir los articulos dentro*/
+                const main = document.querySelector("main");
+                /*Lo añadimos al body*/
+                document.body.appendChild(main);
+                /*Para cada objeto (Informacion de cada perro dentro del array principal)*/
+                datos.forEach(elemento => {
+                    const article = document.createElement("article");
+                    /*Hacemos una condicion para las imagenes:*/
+                    const imagenUrl = elemento.image ? elemento.image.url : "https://via.placeholder.com/200";
+                    /*Asignamos todos los datos a los articulos*/
+                    article.innerHTML = `
+                    <h3>ID: ${elemento["id"]}</h3><br>
+                    <p><strong>Nombre de la raza:</strong> ${elemento["name"]}</p>
+                    <p><strong>Temparamento:</strong>${elemento["temperament"]}</p>
+                    <p><strong>Peso:</strong>${elemento["weight"]["imperial"]}Kg</p>
+                    <p><strong>Altura:</strong> ${elemento["height"]["imperial"]}cm</p>
+                    <p><strong>Promedio de vida de la raza:</strong> ${elemento["life_span"]}</p>
+                    <img src="${imagenUrl}" alt="Perro no disponible">
+                    `;
+                    /*Lo añadimos al contenedor padre(main)*/
+                    main.appendChild(article);
+                });
+            })
+    </script>
+</body>
+</html>
