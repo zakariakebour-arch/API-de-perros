@@ -1,1 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Imagenes aleatorias de perros desde una API</title>
+  <style>
+    *{
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+    /*Centramos el contenido al centro del body*/
+    body{
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    /*Editamos un poco la imagen y le ponemos un limite de tamaño*/
+    img{
+      max-width: 400px;
+      max-height: 400px;
+      object-fit: cover;
+      box-shadow: 2px 2px 10px gray;
+    }
+  </style>
+</head>
+<body>
+<script>
+  // Creamos los elementos una sola vez,un div y la imagen
+  const contenedor = document.createElement("div");
+  const imagen = document.createElement("img");
+  // Añadimos el contenedor al body
+  document.body.appendChild(contenedor);
+  //Añadimos la imagen dentro del contenedor
+  contenedor.appendChild(imagen);
+  //Creamos una funcion que reciba la imagen y asigne la url recibida a la imagen creada,asi evitmos que se repita la misma foto
+  function cargarImagen() {
+    fetch("https://dog.ceo/api/breeds/image/random")
+      .then(r => r.json())
+      .then(datos => {
+        imagen.src = datos.message; // solo actualiza la imagen
+      })
+      .catch(error => console.log("Error:", error));
+  }
 
+  cargarImagen(); //Aqui hacemos la primera carga
+  setInterval(cargarImagen, 3000); // Hacemos que refresque la informacion cada 3s como ejemplo(osea la misma accion de recibir una foto con la funcion cada 3s)
+</script>
+</body>
+</html>
