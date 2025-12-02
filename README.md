@@ -17,14 +17,6 @@ Fallback automático si una raza no tiene imagen (placeholder)
 
 Primer contacto con interacción frontend + APIs
 
-Estructura del proyecto
-/
-│── index.html          # Archivo principal
-│── static/             # Carpeta opcional para imágenes locales si se usan
-│── README.md           # Este archivo
-
-🖼️ Vista previa (Descripción)
-
 La página genera automáticamente una cuadrícula de tarjetas, cada una mostrando:
 
 ID
